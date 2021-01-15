@@ -3,6 +3,33 @@ defmodule Multi.AccountsTest do
 
   alias Multi.Accounts
 
+  describe "Accounts.create_user_with_profile/1" do
+    alias Teacher.Accounts.{User, Profile}
+
+    @valid_user_profile_attrs %{
+      email: "hello@elixircasts.io",
+      github: "elixircastsio",
+      twitter: "elixircastsio",
+      location: "Earth",
+      name: "ElixirCasts"
+    }
+
+    test "with valid params creates a user with a profile" do
+      assert {:ok, %{user: %User{} = user, profile: %Profile{} = profile}} = Accounts.create_user_with_profile(@valid_user_profile_attrs)
+
+      # Assert the user's id matches the profile's user_id reference
+      assert user.id == profile.user_id
+
+      # Assert that the structs returned match their original params
+      assert user.email == @valid_user_profile_attrs[:email]
+      assert profile.twitter == @valid_user_profile_attrs[:twitter]
+      assert profile.github == @valid_user_profile_attrs[:github]
+      assert profile.location == @valid_user_profile_attrs[:location]
+      assert profile.name == @valid_user_profile_attrs[:name]
+    end
+
+  end
+
   describe "users" do
     alias Multi.Accounts.User
 
