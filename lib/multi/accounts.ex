@@ -5,8 +5,24 @@ defmodule Multi.Accounts do
 
   import Ecto.Query, warn: false
   alias Multi.Repo
+  alias Ecto.Multi
 
   alias Multi.Accounts.User
+
+  def create_user_with_profile(attrs) do
+    multi = Multi.new()
+
+    multi
+    |> Multi.run(:user, fn _repo, _changes ->
+      create_user(attrs)
+    end)
+    |> Multi.run(:profile, fn _repo, %{user: %{id: user_id}} ->
+      attrs
+      |> Map.put(:user_id, user_id)
+      |> create_profile()
+    end)
+    |> Repo.transaction()
+  end
 
   @doc """
   Returns the list of users.

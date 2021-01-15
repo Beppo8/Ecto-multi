@@ -7,7 +7,7 @@ defmodule Multi.Accounts.Profile do
     field :location, :string
     field :name, :string
     field :twitter, :string
-    field :user_id, :id
+    belongs_to :user, Teacher.Accounts.User
 
     timestamps()
   end
@@ -15,7 +15,7 @@ defmodule Multi.Accounts.Profile do
   @doc false
   def changeset(profile, attrs) do
     profile
-    |> cast(attrs, [:name, :location, :twitter, :github])
-    |> validate_required([:name, :location, :twitter, :github])
+    |> cast(attrs, [:name, :location, :twitter, :github, :user_id])
+    |> validate_required([:name, :location, :twitter, :github, :user_id])
   end
 end

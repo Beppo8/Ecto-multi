@@ -4,6 +4,7 @@ defmodule Multi.Accounts.User do
 
   schema "users" do
     field :email, :string
+    has_one :profile, Teacher.Accounts.Profile
 
     timestamps()
   end
